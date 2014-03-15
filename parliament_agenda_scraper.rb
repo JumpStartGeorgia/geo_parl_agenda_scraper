@@ -25,7 +25,13 @@ def month_to_int(mstring)
              ნოემბერი: 11,
              დეკემბერი: 12 }
              
-  return months[mstring.to_sym]
+  return months[mstring.gsub(' ','').to_sym]
+end
+
+def parse_date_time(string_day, time_string)
+  day_string, month_string = string_day.strip.scan(/(\d+)\s?(\D+)/).flatten
+  hour, minute = time_string.split(':').map(&:to_i)
+  DateTime.new(Time.now.year, month_to_int(month_string), day_string.to_i, hour, minute, 0, '+3')
 end
 
 url = ARGV[0] || "http://parliament.ge/index.php?option=com_content&view=category&layout=blog&id=59&Itemid=520&lang=ge"
@@ -33,18 +39,11 @@ page = Nokogiri::HTML(open(url).read)
 days = page.css('table.blog > tr')
 
 days.each do |day|
-
-  # get date
-
-  
-  string_day = day.css("td.contentheading").text.strip
-  day_string = string_day.scan(/\d+/).first
-  month_string = string_day.scan(/\D+/).join.gsub(' ', '').strip
-  year_string = Time.now.year
-  time_string = days[0].css('table')[1].css('strong')[0].text[0,5]
-  hour_string, minute_string = time_string.split(':')
-  date = DateTime.new(year_string.to_i, month_to_int(month_string), day_string.to_i, hour_string.to_i, minute_string.to_i, 0, '+3')
-  
-  #
-  
+  next if day.css('table').nil?
+  puts day
+  date = parse_date_time(
+   day.css("td.contentheading").text,
+   day.css('table')[1].css('strong')[0].text[0,5]
+  )
+  puts date
 end
