@@ -11,6 +11,8 @@
 require "nokogiri"
 require "open-uri"
 
+
+
 def month_to_int(mstring)
   months = { იანვარი: 1,
              თებერვალი: 2,
@@ -25,24 +27,26 @@ def month_to_int(mstring)
              ნოემბერი: 11,
              დეკემბერი: 12 }
              
-  months.each do |month, value|
-    return value if mstring == month
-  end
+  return months[mstring.to_sym]
 end
 
 url = "http://parliament.ge/index.php?option=com_content&view=category&layout=blog&id=59&Itemid=520&lang=ge"
+
 page = Nokogiri::HTML(open(url).read)
 
 days = page.css('table.blog > tr')
 
 
-string = days[0].css("td.contentheading").text.chomp
+string_day = days[0].css("td.contentheading").text.chomp
 
-day_string = string.scan(/\d+/)
-month_string = string.scan(/\D+/).join
-print month_string.chomp
+day_string = string_day.scan(/\d+/)
+month_string = string_day.scan(/\D+/).join.gsub(' ', '').strip
+year_string = Time.now.year
+
+string_time = days[0].css('strong')
+
 
 
 days.each do |day|
-     
+  
 end
