@@ -35,16 +35,18 @@ days = page.css('table.blog > tr')
 days.each do |day|
 
   # get date
-
   
-  string_day = day.css("td.contentheading").text.strip
+  string_day = day.css("td.contentheading").text.strip unless day.css("td.contentheading").nil?
   day_string = string_day.scan(/\d+/).first
   month_string = string_day.scan(/\D+/).join.gsub(' ', '').strip
   year_string = Time.now.year
-  time_string = days[0].css('table')[1].css('strong')[0].text[0,5]
-  hour_string, minute_string = time_string.split(':')
-  date = DateTime.new(year_string.to_i, month_to_int(month_string), day_string.to_i, hour_string.to_i, minute_string.to_i, 0, '+3')
+  time_string = day.css('table')[1].css('strong')[0].text[0,5] unless day.css('table')[1].nil? || day.css('table')[1].css('strong')[0].nil?
+  hour_string, minute_string = time_string.split(':') unless time_string.nil?
+  date = DateTime.new(year_string.to_i, month_to_int(month_string), day_string.to_i, hour_string.to_i, minute_string.to_i, 0, '+3') if day_string && month_string && year_string && time_string && hour_string
   
-  #
+  # get title
+  
+  title_string = day.css('table')[1].css('strong')[0].text
+  
   
 end
