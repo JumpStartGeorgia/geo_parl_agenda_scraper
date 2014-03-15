@@ -36,15 +36,9 @@ end
 
 url = ARGV[0] || "http://parliament.ge/index.php?option=com_content&view=category&layout=blog&id=59&Itemid=520&lang=ge"
 
-day 
-
-File.open('data/')
-  File.open(url).read
-
 page = Nokogiri::HTML(open(url).read)
 days = page.xpath('//td[@class="contentheading"]')
 
-count = 1
 days.each do |day|
   time_cell = day.xpath('../../..//td[@colspan=2]')
   date = parse_date_time(
