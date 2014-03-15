@@ -42,5 +42,6 @@ days.each do |day|
   time_cell = day.xpath('../../..//td[@colspan=2]')
   time, title =  time_cell.css('p').first.css('strong').first.text.split ' - '
   date = parse_date_time(day.text, time)
-  puts "Date: #{date} // Title: #{title}"
+  location = time_cell.css('p em').text.scan(/N\d+/).first
+  puts "Date: #{date} // Title: #{title} // Location: #{location}"
 end
