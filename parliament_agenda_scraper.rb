@@ -36,6 +36,14 @@ end
 
 url = ARGV[0] || "http://parliament.ge/index.php?option=com_content&view=category&layout=blog&id=59&Itemid=520&lang=ge"
 
+timestamp = Time.now.strftime('%Y-%m-%d-%H:%M')
+
+open("data/#{timestamp}.html", "wb") do |file|
+  open(url) do |uri|
+     file.write(uri.read)
+  end
+end
+
 page = Nokogiri::HTML(open(url).read)
 days = page.xpath('//td[@class="contentheading"]')
 
