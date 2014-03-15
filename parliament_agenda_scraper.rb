@@ -42,14 +42,14 @@ File.open('data/')
   File.open(url).read
 
 page = Nokogiri::HTML(open(url).read)
-days = page.css('table.blog > tr')
+days = page.xpath('//td[@class="contentheading"]')
 
 count = 1
 days.each do |day|
-  next if day.css('tr td div table.contentpaneopen').nil?
+  time_cell = day.xpath('../../..//td[@colspan=2]')
   date = parse_date_time(
-   day.css("td.contentheading").text,
-   day.css('table')[1].css('strong')[0].text[0,5]
+    day.text,
+    time_cell.css('p').first.css('strong').first.text[0,5]
   )
-  
+  puts date
 end
