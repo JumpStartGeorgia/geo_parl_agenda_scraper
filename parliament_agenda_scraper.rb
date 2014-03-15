@@ -36,14 +36,13 @@ end
 
 url = ARGV[0] || "http://parliament.ge/index.php?option=com_content&view=category&layout=blog&id=59&Itemid=520&lang=ge"
 page = Nokogiri::HTML(open(url).read)
-days = page.css('table.blog > tr')
+days = page.xpath('//td[@class="contentheading"]')
 
 days.each do |day|
-  next if day.css('table').nil?
-  puts day
+  time_cell = day.xpath('../../..//td[@colspan=2]')
   date = parse_date_time(
-   day.css("td.contentheading").text,
-   day.css('table')[1].css('strong')[0].text[0,5]
+    day.text,
+    time_cell.css('p').first.css('strong').first.text[0,5]
   )
   puts date
 end
