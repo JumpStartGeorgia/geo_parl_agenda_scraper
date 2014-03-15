@@ -30,7 +30,7 @@ def month_to_int(mstring)
   return months[mstring.to_sym]
 end
 
-url = "http://parliament.ge/index.php?option=com_content&view=category&layout=blog&id=59&Itemid=520&lang=ge"
+url = ARGV[0] || "http://parliament.ge/index.php?option=com_content&view=category&layout=blog&id=59&Itemid=520&lang=ge"
 
 page = Nokogiri::HTML(open(url).read)
 
@@ -42,10 +42,11 @@ string_day = days[0].css("td.contentheading").text.chomp
 day_string = string_day.scan(/\d+/)
 month_string = string_day.scan(/\D+/).join.gsub(' ', '').strip
 year_string = Time.now.year
+time_string = days[0].css('table')[1].css('strong')[0].text[0,5]
 
-string_time = days[0].css('strong')
+date = Date.parse(day_string, month_string, year_string, time_string)
 
-
+puts date
 
 days.each do |day|
   
