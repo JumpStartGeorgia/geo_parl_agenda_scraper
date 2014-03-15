@@ -12,20 +12,7 @@ require "nokogiri"
 require "open-uri"
 
 def month_to_int(mstring)
-  months = { იანვარი: 1,
-             თებერვალი: 2,
-             მარტი: 3,
-             აპრილი: 4,
-             მაისი: 5,
-             ივნისი: 6,
-             ივლისი: 7,
-             აგვისტო: 8,
-             სექტემბერი: 9,
-             ოქტომბერი: 10,
-             ნოემბერი: 11,
-             დეკემბერი: 12 }
-             
-  return months[mstring.gsub(' ','').to_sym]
+  1 + %w[ იანვარი თებერვალი მარტი აპრილი მაისი ივნისი ივლისი აგვისტო სექტემბერი ოქტომბერი ნოემბერი დეკემბერი ].index(mstring)
 end
 
 def parse_date_time(string_day, time_string)
