@@ -49,9 +49,8 @@ days = page.xpath('//td[@class="contentheading"]')
 
 days.each do |day|
   time_cell = day.xpath('../../..//td[@colspan=2]')
-  date = parse_date_time(
-    day.text,
-    time_cell.css('p').first.css('strong').first.text[0,5]
-  )
-  puts date
+  time, title =  time_cell.css('p').first.css('strong').first.text.split ' - '
+  date = parse_date_time(day.text, time)
+  location = time_cell.css('p em').text.scan(/N\d+/).first
+  puts "Date: #{date} // Title: #{title} // Location: #{location}"
 end
