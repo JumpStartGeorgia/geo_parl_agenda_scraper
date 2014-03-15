@@ -30,7 +30,7 @@ def month_to_int(mstring)
   return months[mstring.to_sym]
 end
 
-url = "http://parliament.ge/index.php?option=com_content&view=category&layout=blog&id=59&Itemid=520&lang=ge"
+url = ARGV[0] || "http://parliament.ge/index.php?option=com_content&view=category&layout=blog&id=59&Itemid=520&lang=ge"
 
 page = Nokogiri::HTML(open(url).read)
 
