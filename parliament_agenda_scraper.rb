@@ -11,8 +11,6 @@
 require "nokogiri"
 require "open-uri"
 
-
-
 def month_to_int(mstring)
   months = { იანვარი: 1,
              თებერვალი: 2,
@@ -35,18 +33,16 @@ url = ARGV[0] || "http://parliament.ge/index.php?option=com_content&view=categor
 page = Nokogiri::HTML(open(url).read)
 
 days = page.css('table.blog > tr')
-
-
 string_day = days[0].css("td.contentheading").text.chomp
 
-day_string = string_day.scan(/\d+/)
+day_string = string_day.scan(/\d+/).first
 month_string = string_day.scan(/\D+/).join.gsub(' ', '').strip
 year_string = Time.now.year
 time_string = days[0].css('table')[1].css('strong')[0].text[0,5]
+hour_string, minute_string = time_string.split(':')
 
-date = Date.parse(day_string, month_string, year_string, time_string)
+date = DateTime.new(year_string.to_i, month_to_int(month_string), day_string.to_i, hour_string.to_i, minute_string.to_i, 0, '+3')
 
-puts date
 
 days.each do |day|
   
